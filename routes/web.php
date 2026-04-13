@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 
     // Add your "Post Item" route here
     Route::get('/post-item', [ItemController::class, 'create'])->name('items.create');
+    Route::post('/post-item', [ItemController::class, 'store'])->name('items.store');
 });
 
 // Admin Only Routes - Using your custom AdminMiddleware
