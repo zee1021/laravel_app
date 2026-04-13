@@ -5,9 +5,7 @@ use App\Http\Controllers\ItemController; // Import your Item Controller
 use App\Http\Controllers\AdminController; // Import your Admin Controller
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ItemController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
