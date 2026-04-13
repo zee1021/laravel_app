@@ -20,7 +20,7 @@
                 Find your next <span class="text-blue-600">treasure</span>.
             </h1>
             <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-                The best marketplace for secondhand cars, computers, clothes, and more in Camp 3.
+                The best marketplace for secondhand cars, computers, clothes, and more in Baguio City.
             </p>
         </div>
     </div>
