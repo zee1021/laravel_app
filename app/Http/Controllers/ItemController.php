@@ -27,6 +27,12 @@ class ItemController extends Controller
         return view('welcome', compact('items', 'categories'));
     }
 
+    public function show(Item $item)
+    {
+        $item->load(['category', 'user', 'images']);
+        return view('items.show', compact('item'));
+    }
+
     public function create()
     {
         $categories = Category::all();

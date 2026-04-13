@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController; // Import your Admin Controller
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ItemController::class, 'index'])->name('home');
+Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

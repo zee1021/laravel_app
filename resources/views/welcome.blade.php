@@ -71,7 +71,7 @@
                             {{ $item->location }}
                         </div>
 
-                        <a href="#" class="mt-5 block w-full text-center bg-gray-900 text-white py-2 rounded-lg font-semibold hover:bg-gray-800 transition">
+                        <a href="{{ route('items.show', $item) }}" class="mt-5 block w-full text-center bg-gray-900 text-white py-2 rounded-lg font-semibold hover:bg-gray-800 transition">
                             View Details
                         </a>
                     </div>
