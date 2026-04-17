@@ -50,7 +50,13 @@
                             <p class="whitespace-pre-wrap">{{ $item->description }}</p>
                         </div>
 
-                        <a href="mailto:{{ $item->user->email }}?subject=Inquiry about your {{ $item->title }} listing" class="block w-full text-center bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition">Contact Seller via Email</a>
+                        @auth
+                            <a href="mailto:{{ $item->user->email }}?subject=Inquiry about your {{ $item->title }} listing" class="block w-full text-center bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition">Contact Seller via Email</a>
+                        @else
+                            <div class="block w-full text-center bg-gray-100 border border-gray-300 text-gray-600 py-3 rounded-lg shadow-sm">
+                                <a href="{{ route('login') }}" class="font-bold text-blue-600 hover:text-blue-500 transition">Log in</a> to view seller contact details
+                            </div>
+                        @endauth
                     </div>
                 </div>
             </div>

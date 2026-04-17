@@ -5,23 +5,21 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth; // Add this import at the top
 
 class AdminMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Check if the user is logged in AND if they are an admin
-        if (Auth::check() && Auth::user()->is_admin) {
-            return $next($request); // Proceed to the requested page
+        // Assuming you have an 'is_admin' boolean column on your users table.
+        // If you are using a string 'role' column instead, use: $request->user()->role === 'admin'
+        if ($request->user() && $request->user()->is_admin) {
+            return $next($request);
         }
 
-        // 2. If not an admin, kick them back to the homepage with an error
-        return redirect('/')->with('error', 'You do not have admin access.');
+        // Deny access for non-admin users
+        abort(403, 'Unauthorized access: Admins only.');
     }
 }
