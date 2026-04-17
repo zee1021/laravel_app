@@ -33,7 +33,7 @@ class ItemSeeder extends Seeder
                 'condition' => 'Used',
                 'location' => 'Manila',
                 'status' => 'Available',
-                'image_filename' => 'honda-civic.jpg' 
+                'image_filename' => 'hondacivic.jpg' 
             ],
             [
                 'user' => $seller2,
@@ -44,7 +44,7 @@ class ItemSeeder extends Seeder
                 'condition' => 'Used',
                 'location' => 'Quezon City',
                 'status' => 'Available',
-                'image_filename' => 'samsung-refrigerator.jpg'
+                'image_filename' => 'samsungref.jpg'
             ],
             [
                 'user' => $seller1,
@@ -55,7 +55,7 @@ class ItemSeeder extends Seeder
                 'condition' => 'Used',
                 'location' => 'Makati',
                 'status' => 'Available',
-                'image_filename' => 'macbook-pro-m1.jpg'
+                'image_filename' => 'macbookpro.jpg'
             ]
         ];
 
