@@ -24,47 +24,50 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-bold mb-6 text-gray-800 border-b pb-4">Manage Your Listings</h3>
 
-                    <div class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         @forelse($items as $item)
-                            <div class="flex flex-col md:flex-row items-center bg-gray-50 border border-gray-100 rounded-lg p-4 gap-4 hover:shadow-sm transition">
+                            <div class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col">
                                 
-                                <!-- Item Image -->
-                                <div class="w-full md:w-32 h-24 bg-gray-200 rounded-md overflow-hidden flex-shrink-0">
+                                <!-- Item Image & Floating Badge -->
+                                <div class="relative w-full h-48 bg-gray-50 overflow-hidden">
                                     @if($item->images->count() > 0)
-                                        <img src="{{ asset('storage/' . $item->images->first()->image_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset('storage/' . $item->images->first()->image_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                     @else
-                                        <div class="flex items-center justify-center h-full text-gray-400 text-xs text-center p-2">No Image</div>
+                                        <div class="flex items-center justify-center h-full text-gray-400 text-sm">No Image</div>
                                     @endif
+                                    <div class="absolute top-3 right-3">
+                                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm {{ $item->status === 'Available' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600' }}">
+                                            {{ $item->status }}
+                                        </span>
+                                    </div>
                                 </div>
-                                
+
                                 <!-- Item Details -->
-                                <div class="flex-grow text-center md:text-left">
-                                    <h4 class="text-xl font-bold text-gray-900">{{ $item->title }}</h4>
-                                    <p class="text-sm font-medium text-blue-600">{{ $item->category->name }} &bull; <span class="text-gray-700">₱{{ number_format($item->price, 2) }}</span></p>
-                                    <p class="text-xs text-gray-500 mt-1">Posted on {{ $item->created_at->format('M d, Y') }}</p>
-                                </div>
+                                <div class="p-5 flex-grow flex flex-col">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-lg font-bold text-gray-900 line-clamp-1" title="{{ $item->title }}">{{ $item->title }}</h4>
+                                        <p class="text-lg font-extrabold text-blue-600 ml-3">₱{{ number_format($item->price, 0) }}</p>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-500 mb-4">{{ $item->category->name }} &bull; <span class="font-normal text-gray-400">Posted {{ $item->created_at->format('M d, Y') }}</span></p>
 
-                                <!-- Status Badge & Actions -->
-                                <div class="flex flex-wrap items-center justify-center md:justify-end gap-2 mt-4 md:mt-0 w-full md:w-auto">
-                                    <span class="px-3 py-1 mr-2 rounded-full text-xs font-bold uppercase tracking-wider border {{ $item->status === 'Available' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-100 text-gray-600 border-gray-300' }}">
-                                        {{ $item->status }}
-                                    </span>
+                                    <!-- Actions -->
+                                    <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between gap-3">
+                                        <form action="{{ route('seller.items.toggle-status', $item) }}" method="POST" class="flex-1">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="w-full text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-3 rounded-lg transition font-medium">
+                                                Mark {{ $item->status === 'Available' ? 'Sold' : 'Available' }}
+                                            </button>
+                                        </form>
 
-                                    <form action="{{ route('seller.items.toggle-status', $item) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="text-xs bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 py-1.5 px-3 rounded-md transition font-semibold">
-                                            Mark {{ $item->status === 'Available' ? 'Sold' : 'Available' }}
-                                        </button>
-                                    </form>
-
-                                    <form action="{{ route('seller.items.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this listing permanently?');" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-xs bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 py-1.5 px-3 rounded-md transition font-semibold">
-                                            Delete
-                                        </button>
-                                    </form>
+                                        <form action="{{ route('seller.items.destroy', $item) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this listing permanently?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-sm bg-red-50 hover:bg-red-100 text-red-600 p-2 rounded-lg transition font-medium flex items-center justify-center" title="Delete">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @empty
