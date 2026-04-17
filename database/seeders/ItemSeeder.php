@@ -33,7 +33,7 @@ class ItemSeeder extends Seeder
                 'condition' => 'Used',
                 'location' => 'Manila',
                 'status' => 'Available',
-                'image_text' => 'Honda+Civic' 
+                'image_filename' => 'honda-civic.jpg' 
             ],
             [
                 'user' => $seller2,
@@ -44,7 +44,7 @@ class ItemSeeder extends Seeder
                 'condition' => 'Used',
                 'location' => 'Quezon City',
                 'status' => 'Available',
-                'image_text' => 'Samsung+Ref'
+                'image_filename' => 'samsung-refrigerator.jpg'
             ],
             [
                 'user' => $seller1,
@@ -55,34 +55,22 @@ class ItemSeeder extends Seeder
                 'condition' => 'Used',
                 'location' => 'Makati',
                 'status' => 'Available',
-                'image_text' => 'MacBook+Pro'
+                'image_filename' => 'macbook-pro-m1.jpg'
             ]
         ];
 
         foreach ($itemsData as $data) {
             $user = $data['user'];
-            $imageText = $data['image_text'];
+            $imageFilename = $data['image_filename'];
 
             // Remove helper keys before passing to Eloquent
-            unset($data['user'], $data['image_text']);
+            unset($data['user'], $data['image_filename']);
 
             // Create the item
             $item = $user->items()->create($data);
 
-            // Download and attach a dummy image
-            try {
-                $filename = 'item_images/' . Str::random(10) . '.png';
-                $imageContent = file_get_contents("https://placehold.co/600x400/EFEFEF/31343C/png?text={$imageText}");
-
-                if ($imageContent) {
-                    Storage::disk('public')->put($filename, $imageContent);
-                    $item->images()->create(['image_path' => $filename]);
-                }
-            } catch (\Exception $e) {
-                if (isset($this->command)) {
-                    $this->command->error("Failed to download image for '{$item->title}': " . $e->getMessage());
-                }
-            }
+            // Directly attach the local image you placed in the storage directory
+            $item->images()->create(['image_path' => 'item_images/' . $imageFilename]);
         }
     }
 }
