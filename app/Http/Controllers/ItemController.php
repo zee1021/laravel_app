@@ -13,15 +13,21 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource for the homepage.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Eager load relationships for performance and paginate results
-        $items = Item::with('category', 'images')
-            ->where('status', 'Available')
-            ->latest()
-            ->paginate(12);
+        $categories = Category::orderBy('name')->get();
 
-        return view('home', compact('items'));
+        $query = Item::with('category', 'images')
+            ->where('status', 'Available');
+
+        // Apply dynamic category filtering if selected
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        $items = $query->latest()->paginate(12);
+
+        return view('welcome', compact('items', 'categories'));
     }
 
     /**

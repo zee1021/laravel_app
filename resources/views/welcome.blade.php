@@ -84,6 +84,11 @@
                 </div>
             @endforelse
         </div>
+        
+        <!-- Pagination Links -->
+        <div class="mt-12">
+            {{ $items->links() }}
+        </div>
     </main>
 </body>
 </html>
